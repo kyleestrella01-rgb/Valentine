@@ -1,0 +1,1608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Valentine's Day Surprise</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-pink: #ff6b8b;
+            --secondary-pink: #ffccd5;
+            --light-pink: #fff0f3;
+            --dark-pink: #d35d7c;
+            --heart-red: #ff4757;
+            --text-dark: #5a3d5c;
+            --shadow: rgba(255, 107, 139, 0.2);
+            --museum-color: #8b5a2b;
+            --intramuros-color: #7a9eb1;
+            --seaside-color: #4a90e2;
+        }
+
+        body {
+            background: linear-gradient(135deg, #fff0f3 0%, #ffe4e9 50%, #ffccd5 100%);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+            background-color: white;
+            border-radius: 25px;
+            box-shadow: 0 20px 60px rgba(255, 107, 139, 0.3);
+            overflow: hidden;
+            position: relative;
+            animation: fadeIn 1s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .heart-bg {
+            position: absolute;
+            color: var(--secondary-pink);
+            font-size: 24px;
+            z-index: 0;
+            animation: float 6s infinite ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        @keyframes enlarge {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+        }
+
+        /* Loading Screen */
+        #loading-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 500px;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .loading-title {
+            color: var(--primary-pink);
+            font-size: 2.8rem;
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(90deg, var(--primary-pink), var(--heart-red), var(--primary-pink));
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 3s linear infinite;
+        }
+
+        .loading-bar-container {
+            width: 80%;
+            height: 25px;
+            background-color: var(--light-pink);
+            border-radius: 15px;
+            margin: 40px 0;
+            overflow: hidden;
+            border: 3px solid var(--secondary-pink);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .loading-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary-pink), var(--heart-red));
+            border-radius: 15px;
+            transition: width 0.5s ease;
+        }
+
+        .loading-text {
+            color: var(--dark-pink);
+            font-size: 1.3rem;
+            margin-top: 20px;
+            font-style: italic;
+        }
+
+        /* Puzzle Screen */
+        .screen {
+            display: none;
+            padding: 40px 30px;
+            flex-direction: column;
+            align-items: center;
+            min-height: 500px;
+        }
+
+        .screen.active {
+            display: flex;
+            animation: slideIn 0.8s ease;
+        }
+
+        @keyframes slideIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(30px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        .screen-title {
+            color: var(--primary-pink);
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .screen-subtitle {
+            color: var(--text-dark);
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            text-align: center;
+            max-width: 700px;
+            line-height: 1.6;
+        }
+
+        .puzzle-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin: 40px 0;
+            max-width: 700px;
+        }
+
+        .puzzle-piece {
+            width: 120px;
+            height: 100px;
+            background-color: var(--secondary-pink);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--dark-pink);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 4px solid var(--light-pink);
+            user-select: none;
+            box-shadow: 0 8px 15px var(--shadow);
+            position: relative;
+            text-align: center;
+            padding: 5px;
+            word-wrap: break-word;
+        }
+
+        .puzzle-piece:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 20px var(--shadow);
+            background-color: var(--primary-pink);
+            color: white;
+        }
+
+        .puzzle-piece.solved {
+            background: linear-gradient(135deg, var(--heart-red) 0%, var(--primary-pink) 100%);
+            color: white;
+            cursor: default;
+            transform: scale(1.1);
+            animation: pulse 1.5s infinite;
+            box-shadow: 0 10px 25px rgba(255, 71, 87, 0.4);
+        }
+
+        .puzzle-piece.wrong-order {
+            animation: shake 0.5s ease;
+        }
+
+        .puzzle-message {
+            font-size: 2.8rem;
+            color: var(--heart-red);
+            margin: 40px 0;
+            text-align: center;
+            min-height: 80px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+
+        .puzzle-message.revealed {
+            opacity: 1;
+        }
+
+        /* Response Screen */
+        .response-buttons {
+            display: flex;
+            gap: 40px;
+            margin-top: 30px;
+        }
+
+        .response-btn {
+            padding: 20px 50px;
+            font-size: 1.8rem;
+            border: none;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            position: relative;
+        }
+
+        #yes-btn {
+            background-color: var(--primary-pink);
+            color: white;
+        }
+
+        #no-btn {
+            background-color: var(--light-pink);
+            color: var(--text-dark);
+        }
+
+        .response-btn:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 18px 30px rgba(255, 107, 139, 0.4);
+        }
+
+        .response-btn:active {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 20px var(--shadow);
+        }
+
+        .yes-enlarged {
+            animation: enlarge 0.5s ease forwards;
+        }
+
+        /* Places Selection */
+        .places-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin: 40px 0;
+            width: 100%;
+        }
+
+        .place-card {
+            background-color: var(--light-pink);
+            border-radius: 20px;
+            padding: 30px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            border: 4px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .place-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            box-shadow: 0 25px 40px rgba(255, 107, 139, 0.3);
+        }
+
+        .place-card.selected {
+            background-color: var(--secondary-pink);
+            border-color: var(--primary-pink);
+            transform: translateY(-8px);
+        }
+
+        .place-icon {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .national-museum .place-icon {
+            color: var(--museum-color);
+        }
+
+        .intramuros .place-icon {
+            color: var(--intramuros-color);
+        }
+
+        .seaside .place-icon {
+            color: var(--seaside-color);
+        }
+
+        .place-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .place-description {
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            opacity: 0.8;
+        }
+
+        /* Activities Selection */
+        .activities-container {
+            display: none;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin: 40px 0;
+            width: 100%;
+        }
+
+        .activity-card {
+            background-color: white;
+            border-radius: 20px;
+            padding: 30px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            border: 3px solid var(--light-pink);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .activity-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 25px var(--shadow);
+            border-color: var(--primary-pink);
+        }
+
+        .activity-card.selected {
+            background-color: var(--secondary-pink);
+            border-color: var(--primary-pink);
+        }
+
+        .activity-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .activity-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .activity-description {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            line-height: 1.5;
+        }
+
+        /* Food Selection */
+        .food-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 40px 0;
+            width: 100%;
+        }
+
+        .food-card {
+            background-color: white;
+            border-radius: 18px;
+            padding: 25px 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 3px solid var(--light-pink);
+        }
+
+        .food-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--primary-pink);
+            box-shadow: 0 12px 20px var(--shadow);
+        }
+
+        .food-card.selected {
+            background-color: var(--secondary-pink);
+            border-color: var(--heart-red);
+        }
+
+        .food-icon {
+            font-size: 2.5rem;
+            color: var(--primary-pink);
+            margin-bottom: 15px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .food-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .food-description {
+            font-size: 0.85rem;
+            color: var(--text-dark);
+            opacity: 0.8;
+        }
+
+        /* Final Screen */
+        #final-screen {
+            padding: 40px 30px;
+        }
+
+        .final-message {
+            font-size: 2rem;
+            text-align: center;
+            margin: 30px 0;
+            color: var(--heart-red);
+            font-weight: bold;
+            line-height: 1.5;
+        }
+
+        .surprise-container {
+            background: linear-gradient(135deg, var(--light-pink) 0%, #ffeef3 100%);
+            border-radius: 25px;
+            padding: 35px;
+            margin: 30px 0;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(255, 107, 139, 0.15);
+            border: 2px solid rgba(255, 107, 139, 0.1);
+        }
+
+        .surprise-container h3 {
+            color: var(--primary-pink);
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .surprise-container p {
+            color: var(--text-dark);
+            opacity: 0.8;
+            font-style: italic;
+        }
+
+        .gallery-container {
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+            position: relative;
+            border-radius: 15px;
+            margin: 30px 0;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .gallery-track {
+            display: flex;
+            position: absolute;
+            left: 0;
+            height: 100%;
+            animation: scrollGallery 40s linear infinite;
+        }
+
+        .gallery-image {
+            height: 100%;
+            width: 300px;
+            object-fit: cover;
+            margin-right: 12px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(255, 107, 139, 0.2);
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+
+        .gallery-image:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 107, 139, 0.4);
+            z-index: 10;
+        }
+
+        .pin-section {
+            margin: 40px 0;
+            padding: 30px;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .pin-instruction {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+        }
+
+        .pin-input-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .pin-input {
+            padding: 15px 25px;
+            font-size: 1.5rem;
+            border-radius: 15px;
+            border: 3px solid var(--primary-pink);
+            width: 200px;
+            text-align: center;
+            letter-spacing: 5px;
+            font-weight: bold;
+        }
+
+        .pin-btn {
+            padding: 15px 35px;
+            background-color: var(--primary-pink);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .pin-btn:hover {
+            background-color: var(--heart-red);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(255, 107, 139, 0.4);
+        }
+
+        .pin-btn:active {
+            transform: translateY(-2px);
+        }
+
+        .video-container {
+            margin: 40px 0;
+            display: none;
+            animation: fadeIn 0.8s ease;
+        }
+
+        .video-loading {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+            color: var(--primary-pink);
+        }
+
+        .video-loading i {
+            font-size: 3rem;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .video-wrapper {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(255, 107, 139, 0.3);
+        }
+
+        .video-wrapper iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .video-container video {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .password-hint {
+            font-size: 1rem;
+            color: var(--dark-pink);
+            margin-top: 15px;
+            font-style: italic;
+        }
+
+        /* Navigation Buttons */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 40px;
+        }
+
+        .nav-btn {
+            padding: 15px 30px;
+            background-color: var(--primary-pink);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-btn:hover {
+            background-color: var(--heart-red);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(255, 107, 139, 0.4);
+        }
+
+        .nav-btn:active {
+            transform: translateY(-2px);
+        }
+
+        .nav-btn:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Hearts Animation */
+        @keyframes scrollGallery {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        @keyframes heartBeat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+
+        /* Progress Indicator */
+        .progress-indicator {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .progress-step {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--light-pink);
+            transition: all 0.3s ease;
+        }
+
+        .progress-step.active {
+            background: linear-gradient(135deg, var(--primary-pink) 0%, var(--heart-red) 100%);
+            transform: scale(1.3);
+            box-shadow: 0 0 10px rgba(255, 107, 139, 0.5);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 900px) {
+            .container {
+                max-width: 95%;
+            }
+            
+            .puzzle-container {
+                gap: 15px;
+            }
+            
+            .places-container, .activities-container, .food-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .response-buttons {
+                flex-direction: column;
+                gap: 25px;
+                align-items: center;
+            }
+            
+            .screen-title {
+                font-size: 2rem;
+            }
+            
+            .puzzle-piece {
+                width: 100px;
+                height: 80px;
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                border-radius: 20px;
+            }
+            
+            .puzzle-container {
+                gap: 10px;
+            }
+            
+            .places-container, .activities-container, .food-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .screen {
+                padding: 25px 15px;
+            }
+            
+            .screen-title {
+                font-size: 1.6rem;
+            }
+            
+            .screen-subtitle {
+                font-size: 1rem;
+            }
+            
+            .puzzle-piece {
+                width: 90px;
+                height: 70px;
+                font-size: 1.1rem;
+            }
+            
+            .response-btn {
+                padding: 15px 30px;
+                font-size: 1.4rem;
+            }
+            
+            .nav-btn {
+                padding: 12px 18px;
+                font-size: 0.95rem;
+            }
+            
+            .pin-input-container {
+                flex-direction: column;
+            }
+            
+            .gallery-container {
+                height: 200px;
+            }
+            
+            .video-wrapper {
+                border-radius: 15px;
+            }
+            
+            .surprise-container {
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background Hearts -->
+    <div id="heart-background"></div>
+    
+    <div class="container">
+        <!-- Loading Screen -->
+        <div id="loading-screen" class="screen active">
+            <h1 class="loading-title">Your Valentine's Day Surprise Awaits</h1>
+            <div class="loading-bar-container">
+                <div class="loading-bar" id="loading-bar"></div>
+            </div>
+            <p class="loading-text" id="loading-text">Loading romance and magic...</p>
+        </div>
+
+        <!-- Puzzle Screen -->
+        <div id="puzzle-screen" class="screen">
+            <h2 class="screen-title">Unlock the Secret Message</h2>
+            <p class="screen-subtitle">Click on the hearts in the correct order to reveal my special message</p>
+            <div class="progress-indicator">
+                <div class="progress-step active"></div>
+                <div class="progress-step"></div>
+                <div class="progress-step"></div>
+                <div class="progress-step"></div>
+                <div class="progress-step"></div>
+                <div class="progress-step"></div>
+            </div>
+            <div class="puzzle-container" id="puzzle-container">
+                <!-- Puzzle pieces will be generated by JavaScript -->
+            </div>
+            <div class="puzzle-message" id="puzzle-message"></div>
+        </div>
+
+        <!-- Response Screen -->
+        <div id="response-screen" class="screen">
+            <h2 class="screen-title" id="valentine-question"></h2>
+            <p class="screen-subtitle">Please give me your answer, my love</p>
+            <div class="progress-indicator">
+                <div class="progress-step"></div>
+                <div class="progress-step active"></div>
+                <div class="progress-step"></div>
+                <div class="progress-step"></div>
+                <div class="progress-step"></div>
+                <div class="progress-step"></div>
+            </div>
+            <div class="response-buttons">
+                <button class="response-btn" id="yes-btn">Yes! <i class="fas fa-heart"></i></button>
+                <button class="response-btn" id="no-btn">No <i class="far fa-heart"></i></button>
+            </div>
+        </div>
+
+        <!-- Places Screen -->
+        <div id="places-screen" class="screen">
+            <h2 class="screen-title">Choose Our Valentine's Day Destination</h2>
+            <p class="screen-subtitle">Pick one of these special places for our date</p>
+            <div class="progress-indicator">
+                <div class="progress-step"></div>
+                <div class="progress-step"></div>
+                <div class="progress-step active"></div>
+                <div class="progress-step"></div>
+                <div class="progress-step"></div>
+                <div class="progress-step"></div>
+            </div>
+            <div class="places-container" id="places-container">
+                <!-- Place cards will be generated by JavaScript -->
+            </div>
+            <div class="nav-buttons">
+                <button class="nav-btn" id="back-to-response"><i class="fas fa-arrow-left"></i> Back</button>
+                <button class="nav-btn" id="next-to-activities" disabled>Next <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+
+        <!-- Activities Screen -->
+        <div id="activities-screen" class="screen">
+            <h2 class="screen-title" id="activities-title">Activities at <span id="selected-place"></span></h2>
+            <p class="screen-subtitle">Choose an activity you'd enjoy most at this location</p>
+            <div class="progress-indicator">
+                <div class="progress-step"></div>
+                <div class="progress-step"></div>
+                <div class="progress-step"></div>
+                <div class="progress-step active"></div>
+                <div class="progress-step"></div>
+                <div class="progress-step"></div>
+            </div>
+            <div class="activities-container" id="activities-container">
+                <!-- Activities will be generated by JavaScript based on place -->
+            </div>
+            <div class="nav-buttons">
+                <button class="nav-btn" id="back-to-places"><i class="fas fa-arrow-left"></i> Back</button>
+                <button class="nav-btn" id="next-to-food" disabled>Next <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+
+        <!-- Food Screen -->
+        <div id="food-screen" class="screen">
+            <h2 class="screen-title">Select Your Food Preference</h2>
+            <p class="screen-subtitle">What kind of food would you enjoy on our date?</p>
+            <div class="progress-indicator">
+                <div class="progress-step"></div>
+                <div class="progress-step"></div>
+                <div class="progress-step"></div>
+                <div class="progress-step"></div>
+                <div class="progress-step active"></div>
+                <div class="progress-step"></div>
+            </div>
+            <div class="food-container" id="food-container">
+                <!-- Food categories will be generated by JavaScript -->
+            </div>
+            <div class="nav-buttons">
+                <button class="nav-btn" id="back-to-activities"><i class="fas fa-arrow-left"></i> Back</button>
+                <button class="nav-btn" id="next-to-final" disabled>Next <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+
+        <!-- Final Screen -->
+        <div id="final-screen" class="screen">
+            <h2 class="screen-title">Your Valentine's Day Plan is Complete!</h2>
+            <div class="progress-indicator">
+                <div class="progress-step"></div>
+                <div class="progress-step"></div>
+                <div class="progress-step"></div>
+                <div class="progress-step"></div>
+                <div class="progress-step"></div>
+                <div class="progress-step active"></div>
+            </div>
+            <div class="final-message">
+                I'm so excited for our Valentine's Day together! <br>
+                More surprises await you below...
+            </div>
+            
+            <div class="surprise-container">
+                <h3>My Beautiful Gallery</h3>
+                <p>A collection of precious moments</p>
+                <div class="gallery-container">
+                    <div class="gallery-track" id="gallery-track">
+                        <!-- Images will be added by JavaScript -->
+                    </div>
+                </div>
+                
+                <div class="pin-section">
+                    <h3>Guess My First Surprise</h3>
+                    <p class="pin-instruction">Can you guess the secret pin to unlock my special piano surprise for you?</p>
+                    <div class="pin-input-container">
+                        <input type="password" class="pin-input" id="pin-input" placeholder="____" maxlength="4">
+                        <button class="pin-btn" id="pin-btn">Unlock Surprise</button>
+                    </div>
+                    <p class="password-hint">Hint: The pin is "1432" (I love you too)</p>
+                    <p id="pin-feedback"></p>
+                    
+                    <div class="video-container" id="video-container">
+                        <div class="video-wrapper">
+                            <iframe 
+                                width="100%" 
+                                height="400"
+                                src="https://www.youtube.com/embed/_S62YCoL3Gw"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+                        <div class="final-message" style="margin-top: 30px;">
+                            I can't wait for Valentine's Day, my love! <br>
+                            I'm so excited to create beautiful memories with you. ❤️
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="nav-buttons">
+                <button class="nav-btn" id="back-to-food"><i class="fas fa-arrow-left"></i> Back</button>
+                <button class="nav-btn" id="restart-btn"><i class="fas fa-redo"></i> Start Over</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // ENHANCED VALENTINE'S DAY CARD
+        // ============================================
+        // 
+        // FEATURES:
+        //
+        // 1. INTERACTIVE PUZZLE:
+        //    - Click hearts in correct order to reveal message
+        //    - Visual feedback with shake and pulse animations
+        //    - Smooth word-by-word reveal
+        //
+        // 2. PLAYFUL RESPONSE BUTTONS:
+        //    - Stationary buttons with enhanced hover effects
+        //    - Yes button grows with No clicks
+        //    - Auto-select after 5 No clicks
+        //
+        // 3. DATE PLANNER:
+        //    - 3 romantic destinations to choose from
+        //    - Activities based on selected location
+        //    - Food preference selection
+        //
+        // 4. FINAL SURPRISES:
+        //    - "My Beautiful Gallery" with photos
+        //    - YouTube video surprise (PIN: 1432)
+        //    - Smooth animations and transitions
+        //
+        // 5. PERFORMANCE OPTIMIZATIONS:
+        //    - Smooth scroll behavior
+        //    - Lazy loading for images
+        //    - Optimized animations
+        //    - Responsive design for all devices
+        // ============================================
+
+        // Generate background hearts
+        function generateHearts() {
+            const heartBackground = document.getElementById('heart-background');
+            const heartCount = 40;
+            
+            for (let i = 0; i < heartCount; i++) {
+                const heart = document.createElement('div');
+                heart.innerHTML = '❤';
+                heart.classList.add('heart-bg');
+                
+                // Random positioning for visual appeal
+                const size = Math.random() * 35 + 15;
+                const left = Math.random() * 100;
+                const top = Math.random() * 100;
+                const delay = Math.random() * 5;
+                const duration = 5 + Math.random() * 5;
+                
+                heart.style.fontSize = `${size}px`;
+                heart.style.left = `${left}vw`;
+                heart.style.top = `${top}vh`;
+                heart.style.animationDelay = `${delay}s`;
+                heart.style.animationDuration = `${duration}s`;
+                heart.style.opacity = 0.15 + Math.random() * 0.25;
+                
+                heartBackground.appendChild(heart);
+            }
+        }
+
+        // Loading screen simulation
+        function simulateLoading() {
+            const loadingBar = document.getElementById('loading-bar');
+            const loadingText = document.getElementById('loading-text');
+            const loadingScreen = document.getElementById('loading-screen');
+            const puzzleScreen = document.getElementById('puzzle-screen');
+            
+            let width = 0;
+            const interval = setInterval(() => {
+                width += Math.random() * 12 + 5;
+                if (width >= 100) {
+                    width = 100;
+                    clearInterval(interval);
+                    
+                    loadingText.textContent = "Your surprise is ready!";
+                    loadingBar.style.boxShadow = "0 0 15px var(--heart-red)";
+                    
+                    // Transition to puzzle screen
+                    setTimeout(() => {
+                        loadingScreen.classList.remove('active');
+                        puzzleScreen.classList.add('active');
+                        initializePuzzle();
+                        updateProgress(1);
+                    }, 1000);
+                }
+                
+                loadingBar.style.width = `${width}%`;
+                
+                // Update loading messages for engagement
+                if (width < 25) {
+                    loadingText.textContent = "Gathering roses and chocolates...";
+                } else if (width < 50) {
+                    loadingText.textContent = "Preparing romantic surprises...";
+                } else if (width < 75) {
+                    loadingText.textContent = "Crafting the perfect message...";
+                } else if (width < 95) {
+                    loadingText.textContent = "Adding the final touches...";
+                }
+            }, 250);
+        }
+
+        // Update progress indicator
+        function updateProgress(step) {
+            const steps = document.querySelectorAll('.progress-step');
+            steps.forEach((stepElement, index) => {
+                if (index < step) {
+                    stepElement.classList.add('active');
+                } else {
+                    stepElement.classList.remove('active');
+                }
+            });
+        }
+
+        // ============================================
+        // FIXED PUZZLE FUNCTIONALITY
+        // ============================================
+        function initializePuzzle() {
+            const puzzleContainer = document.getElementById('puzzle-container');
+            const puzzleMessage = document.getElementById('puzzle-message');
+            const valentineQuestion = document.getElementById('valentine-question');
+            
+            // The secret message to reveal
+            const message = "Will you be my Valentine?";
+            const words = message.split(" ");
+            
+            // Clear any previous puzzle pieces
+            puzzleContainer.innerHTML = '';
+            
+            // Track which word should be clicked next
+            let currentWordIndex = 0;
+            
+            // Create puzzle pieces (hearts) for each word
+            words.forEach((word, index) => {
+                const piece = document.createElement('div');
+                piece.classList.add('puzzle-piece');
+                piece.textContent = '❤';
+                piece.dataset.word = word;
+                piece.dataset.index = index;
+                
+                piece.addEventListener('click', () => {
+                    // Check if this is the correct piece to click (must be in order)
+                    if (parseInt(piece.dataset.index) === currentWordIndex) {
+                        // CORRECT - reveal the word
+                        piece.classList.add('solved');
+                        piece.textContent = word;
+                        piece.style.animation = 'heartBeat 0.8s ease';
+                        
+                        // Move to next word
+                        currentWordIndex++;
+                        
+                        // Check if puzzle is complete
+                        if (currentWordIndex === words.length) {
+                            // Reveal the full message
+                            puzzleMessage.textContent = message;
+                            puzzleMessage.classList.add('revealed');
+                            valentineQuestion.textContent = message;
+                            
+                            // Move to response screen after delay
+                            setTimeout(() => {
+                                document.getElementById('puzzle-screen').classList.remove('active');
+                                document.getElementById('response-screen').classList.add('active');
+                                updateProgress(2);
+                            }, 2000);
+                        }
+                    } else {
+                        // WRONG ORDER - show shake animation
+                        piece.classList.add('wrong-order');
+                        setTimeout(() => {
+                            piece.classList.remove('wrong-order');
+                        }, 500);
+                    }
+                });
+                
+                puzzleContainer.appendChild(piece);
+            });
+        }
+
+        // ============================================
+        // FIXED RESPONSE BUTTONS - STATIONARY & GLITCH-FREE
+        // ============================================
+        function setupResponseButtons() {
+            const yesBtn = document.getElementById('yes-btn');
+            const noBtn = document.getElementById('no-btn');
+            const responseScreen = document.getElementById('response-screen');
+            const placesScreen = document.getElementById('places-screen');
+            
+            let noClickCount = 0;
+            const noButtonTexts = [
+                "Are you sure?",
+                "Maybe think about it?",
+                "I'll be really sad!",
+                "Pretty please?",
+                "Last chance to change your mind!"
+            ];
+            
+            // NO BUTTON CLICK HANDLER - FIXED
+            noBtn.addEventListener('click', () => {
+                noClickCount++;
+                
+                // 1. Enlarge Yes button (brief animation)
+                yesBtn.classList.add('yes-enlarged');
+                setTimeout(() => {
+                    yesBtn.classList.remove('yes-enlarged');
+                }, 500);
+                
+                // 2. Update No button text and fill color (NO GLITCHES)
+                const fillAmount = Math.min(0.2 + (noClickCount * 0.2), 1);
+                noBtn.style.backgroundColor = `rgba(255, 107, 139, ${fillAmount})`;
+                
+                // Properly set the button text with icon
+                const buttonText = noButtonTexts[Math.min(noClickCount - 1, noButtonTexts.length - 1)];
+                noBtn.innerHTML = `${buttonText} <i class="far fa-heart"></i>`;
+                
+                // 3. If clicked 5 times, automatically select Yes
+                if (noClickCount >= 5) {
+                    setTimeout(() => {
+                        yesBtn.click();
+                    }, 800);
+                }
+            });
+            
+            // YES BUTTON CLICK HANDLER - FIXED
+            yesBtn.addEventListener('click', () => {
+                // 1. Animate the Yes button
+                yesBtn.style.animation = 'heartBeat 0.6s ease 3';
+                yesBtn.innerHTML = 'Yes! <i class="fas fa-heart" style="color:#ff4757;"></i>';
+                yesBtn.style.backgroundColor = '#ff4757';
+                yesBtn.style.boxShadow = '0 0 30px rgba(255, 71, 87, 0.7)';
+                
+                // 2. Disable the No button
+                noBtn.style.opacity = '0.5';
+                noBtn.style.pointerEvents = 'none';
+                
+                // 3. Move to next screen after animation
+                setTimeout(() => {
+                    responseScreen.classList.remove('active');
+                    placesScreen.classList.add('active');
+                    initializePlaces();
+                    updateProgress(3);
+                }, 2000);
+            });
+        }
+
+        // Places selection
+        function initializePlaces() {
+            const placesContainer = document.getElementById('places-container');
+            const nextBtn = document.getElementById('next-to-activities');
+            
+            const places = [
+                { 
+                    name: "National Museum", 
+                    icon: "fas fa-landmark",
+                    description: "A cultural journey through history and art",
+                    colorClass: "national-museum"
+                },
+                { 
+                    name: "Intramuros", 
+                    icon: "fas fa-fort-awesome",
+                    description: "Romantic walk through historic walls",
+                    colorClass: "intramuros"
+                },
+                { 
+                    name: "SM Seaside", 
+                    icon: "fas fa-umbrella-beach",
+                    description: "Modern fun with ocean views",
+                    colorClass: "seaside"
+                }
+            ];
+            
+            placesContainer.innerHTML = '';
+            let selectedPlace = null;
+            
+            places.forEach(place => {
+                const card = document.createElement('div');
+                card.classList.add('place-card', place.colorClass);
+                card.innerHTML = `
+                    <div class="place-icon"><i class="${place.icon}"></i></div>
+                    <div class="place-title">${place.name}</div>
+                    <div class="place-description">${place.description}</div>
+                `;
+                
+                card.addEventListener('click', () => {
+                    // Remove selected class from all cards
+                    document.querySelectorAll('.place-card').forEach(c => {
+                        c.classList.remove('selected');
+                    });
+                    
+                    // Add selected class to clicked card
+                    card.classList.add('selected');
+                    selectedPlace = place;
+                    
+                    // Enable next button
+                    nextBtn.disabled = false;
+                });
+                
+                placesContainer.appendChild(card);
+            });
+            
+            // Next button functionality
+            nextBtn.addEventListener('click', () => {
+                if (selectedPlace) {
+                    document.getElementById('places-screen').classList.remove('active');
+                    document.getElementById('activities-screen').classList.add('active');
+                    document.getElementById('selected-place').textContent = selectedPlace.name;
+                    initializeActivities(selectedPlace.name);
+                    updateProgress(4);
+                }
+            });
+            
+            // Back button functionality
+            document.getElementById('back-to-response').addEventListener('click', () => {
+                document.getElementById('places-screen').classList.remove('active');
+                document.getElementById('response-screen').classList.add('active');
+                updateProgress(2);
+            });
+        }
+
+        // Activities selection based on place
+        function initializeActivities(place) {
+            const activitiesContainer = document.getElementById('activities-container');
+            const nextBtn = document.getElementById('next-to-food');
+            
+            // Define activities for each place
+            const activitiesByPlace = {
+                "National Museum": [
+                    { 
+                        name: "Solve a Puzzle", 
+                        icon: "fas fa-puzzle-piece",
+                        description: "Work together to solve an interactive museum puzzle"
+                    },
+                    { 
+                        name: "Walk to Rizal Park at Night", 
+                        icon: "fas fa-moon",
+                        description: "Stroll from the museum to see Rizal Park illuminated at night"
+                    },
+                    { 
+                        name: "Photography & Sketching", 
+                        icon: "fas fa-camera",
+                        description: "Capture beautiful art and architecture together"
+                    }
+                ],
+                "Intramuros": [
+                    { 
+                        name: "Explore with a Twist", 
+                        icon: "fas fa-map-signs",
+                        description: "A guided exploration with romantic surprises along the way"
+                    },
+                    { 
+                        name: "Rent a Bike", 
+                        icon: "fas fa-bicycle",
+                        description: "Roam the historic walls on a rented bicycle for two"
+                    },
+                    { 
+                        name: "Stargazing", 
+                        icon: "fas fa-star",
+                        description: "Find a secluded spot to watch the stars together"
+                    }
+                ],
+                "SM Seaside": [
+                    { 
+                        name: "Boatside", 
+                        icon: "fas fa-ship",
+                        description: "Enjoy a romantic boat ride with ocean views"
+                    },
+                    { 
+                        name: "Sunset Watching", 
+                        icon: "fas fa-sun",
+                        description: "Find the perfect spot to watch the sunset over the sea"
+                    },
+                    { 
+                        name: "Watch a Movie", 
+                        icon: "fas fa-film",
+                        description: "Catch a romantic movie at the cinema"
+                    }
+                ]
+            };
+            
+            activitiesContainer.innerHTML = '';
+            let selectedActivity = null;
+            
+            // Make activities container visible
+            activitiesContainer.style.display = 'grid';
+            
+            activitiesByPlace[place].forEach(activity => {
+                const card = document.createElement('div');
+                card.classList.add('activity-card');
+                card.innerHTML = `
+                    <div class="activity-icon"><i class="${activity.icon}"></i></div>
+                    <div class="activity-title">${activity.name}</div>
+                    <div class="activity-description">${activity.description}</div>
+                `;
+                
+                card.addEventListener('click', () => {
+                    // Remove selected class from all cards
+                    document.querySelectorAll('.activity-card').forEach(c => {
+                        c.classList.remove('selected');
+                    });
+                    
+                    // Add selected class to clicked card
+                    card.classList.add('selected');
+                    selectedActivity = activity.name;
+                    
+                    // Enable next button
+                    nextBtn.disabled = false;
+                });
+                
+                activitiesContainer.appendChild(card);
+            });
+            
+            // Next button functionality
+            nextBtn.addEventListener('click', () => {
+                if (selectedActivity) {
+                    document.getElementById('activities-screen').classList.remove('active');
+                    document.getElementById('food-screen').classList.add('active');
+                    initializeFoodCategories();
+                    updateProgress(5);
+                }
+            });
+            
+            // Back button functionality
+            document.getElementById('back-to-places').addEventListener('click', () => {
+                document.getElementById('activities-screen').classList.remove('active');
+                document.getElementById('places-screen').classList.add('active');
+                updateProgress(3);
+            });
+        }
+
+        // Food categories selection
+        function initializeFoodCategories() {
+            const foodContainer = document.getElementById('food-container');
+            const nextBtn = document.getElementById('next-to-final');
+            
+            const foodCategories = [
+                { 
+                    name: "Comfort Food", 
+                    icon: "fas fa-utensils",
+                    description: "Classic dishes that feel like a warm hug"
+                },
+                { 
+                    name: "Asian Flavors", 
+                    icon: "fas fa-globe-asia",
+                    description: "Explore diverse tastes from across Asia"
+                },
+                { 
+                    name: "Healthy & Light", 
+                    icon: "fas fa-leaf",
+                    description: "Fresh, nutritious options for a light meal"
+                },
+                { 
+                    name: "Sweet Treats", 
+                    icon: "fas fa-ice-cream",
+                    description: "Desserts and sweets to satisfy your cravings"
+                },
+                { 
+                    name: "Street Food & Casual", 
+                    icon: "fas fa-hotdog",
+                    description: "Fun, casual eats for a relaxed vibe"
+                },
+                { 
+                    name: "Romantic Dining", 
+                    icon: "fas fa-wine-glass-alt",
+                    description: "Elegant dining for a special evening"
+                }
+            ];
+            
+            foodContainer.innerHTML = '';
+            let selectedFood = null;
+            
+            foodCategories.forEach(food => {
+                const card = document.createElement('div');
+                card.classList.add('food-card');
+                card.innerHTML = `
+                    <div class="food-icon"><i class="${food.icon}"></i></div>
+                    <div class="food-title">${food.name}</div>
+                    <div class="food-description">${food.description}</div>
+                `;
+                
+                card.addEventListener('click', () => {
+                    // Remove selected class from all cards
+                    document.querySelectorAll('.food-card').forEach(c => {
+                        c.classList.remove('selected');
+                    });
+                    
+                    // Add selected class to clicked card
+                    card.classList.add('selected');
+                    selectedFood = food.name;
+                    
+                    // Enable next button
+                    nextBtn.disabled = false;
+                });
+                
+                foodContainer.appendChild(card);
+            });
+            
+            // Next button functionality
+            nextBtn.addEventListener('click', () => {
+                if (selectedFood) {
+                    document.getElementById('food-screen').classList.remove('active');
+                    document.getElementById('final-screen').classList.add('active');
+                    initializeFinalSurprise();
+                    updateProgress(6);
+                }
+            });
+            
+            // Back button functionality
+            document.getElementById('back-to-activities').addEventListener('click', () => {
+                document.getElementById('food-screen').classList.remove('active');
+                document.getElementById('activities-screen').classList.add('active');
+                updateProgress(4);
+            });
+        }
+
+        // ============================================
+        // ENHANCED FINAL SURPRISE SECTION
+        // ============================================
+        function initializeFinalSurprise() {
+            const galleryTrack = document.getElementById('gallery-track');
+            const pinInput = document.getElementById('pin-input');
+            const pinBtn = document.getElementById('pin-btn');
+            const pinFeedback = document.getElementById('pin-feedback');
+            const videoContainer = document.getElementById('video-container');
+            
+            // Use new images from workspace
+            const images = [
+                'nj 2.webp',
+                'nj 3.webp',
+                'nj 5.webp',
+                'nj 6.webp',
+                'nj 8.webp',
+                'nj 10.webp',
+                'nj 11.webp'
+            ];
+            
+            // Duplicate images for seamless scrolling
+            const allImages = [...images, ...images];
+            
+            allImages.forEach(imgSrc => {
+                const img = document.createElement('img');
+                img.classList.add('gallery-image');
+                img.loading = 'lazy';
+                img.src = imgSrc;
+                img.alt = "Precious moment";
+                galleryTrack.appendChild(img);
+            });
+            
+            // Pin functionality
+            pinBtn.addEventListener('click', checkPin);
+            
+            pinInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    checkPin();
+                }
+            });
+            
+            function checkPin() {
+                if (pinInput.value === "1432") {
+                    pinFeedback.textContent = "Correct! Unlocking your special piano surprise...";
+                    pinFeedback.style.color = "green";
+                    pinInput.style.borderColor = "green";
+                    
+                    setTimeout(() => {
+                        videoContainer.style.display = 'block';
+                        pinInput.value = '';
+                        pinFeedback.textContent = '';
+                        
+                        // Smooth scroll to video with offset
+                        const yOffset = -20;
+                        const y = videoContainer.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                        window.scrollTo({ top: y, behavior: 'smooth' });
+                    }, 1500);
+                } else {
+                    pinFeedback.textContent = "Not quite right. Try again! Hint: 1432";
+                    pinFeedback.style.color = "red";
+                    pinInput.style.borderColor = "red";
+                    pinInput.value = '';
+                    
+                    // Clear error after 3 seconds
+                    setTimeout(() => {
+                        pinFeedback.textContent = '';
+                        pinInput.style.borderColor = '';
+                    }, 3000);
+                }
+            }
+            
+            // Back button functionality
+            document.getElementById('back-to-food').addEventListener('click', () => {
+                document.getElementById('final-screen').classList.remove('active');
+                document.getElementById('food-screen').classList.add('active');
+                updateProgress(5);
+            });
+            
+            // Restart button functionality
+            document.getElementById('restart-btn').addEventListener('click', () => {
+                document.getElementById('final-screen').classList.remove('active');
+                document.getElementById('loading-screen').classList.add('active');
+                
+                // Reset loading bar
+                document.getElementById('loading-bar').style.width = '0%';
+                document.getElementById('loading-bar').style.boxShadow = 'none';
+                document.getElementById('loading-text').textContent = 'Loading romance and magic...';
+                
+                // Reset progress indicator
+                updateProgress(0);
+                
+                // Restart the experience
+                setTimeout(simulateLoading, 500);
+            });
+        }
+
+        // Initialize the entire experience
+        document.addEventListener('DOMContentLoaded', () => {
+            generateHearts();
+            simulateLoading();
+            setupResponseButtons();
+        });
+    </script>
+</body>
+</html>
